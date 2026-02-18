@@ -145,8 +145,6 @@ mvn spring-boot:run
 
 ## 🗺 Roadmap
 
-* [ ] Implement PUT (update product)
-* [ ] Add validation with @Valid
 * [ ] Global exception handling
 * [ ] Unit tests
 * [ ] Authentication with Spring Security
@@ -162,7 +160,7 @@ mvn spring-boot:run
 
 ## 👨‍💻 Author
 
-Developed by Henrique João.
+Developed by João Henrique.
 
 Backend developer in progress, focused on Java and Spring Boot ecosystem.
 
