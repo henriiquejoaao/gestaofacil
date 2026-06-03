@@ -71,4 +71,18 @@ public class ProductController {
     return ResponseEntity.status(HttpStatus.OK).body(product);
   }
 
+  @GetMapping("/barcode/{barcode}")
+  public ResponseEntity<ProductResponseDTO> getByBarcode(@PathVariable String barcode) {
+    return ResponseEntity.ok().body(service.getByBarcode(barcode));
+  }
+
+  @GetMapping("/low-stock")
+  public ResponseEntity<List<ProductResponseDTO>> getLowStockProducts() {
+    return ResponseEntity.ok().body(service.getLowStockProducts());
+  }
+
+  @GetMapping("/out-of-stock")
+  public ResponseEntity<List<ProductResponseDTO>> getOutOfStock() {
+    return ResponseEntity.ok().body(service.getOutOfStockProducts());
+  }
 }

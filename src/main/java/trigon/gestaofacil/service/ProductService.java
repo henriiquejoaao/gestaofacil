@@ -72,4 +72,17 @@ public class ProductService {
     return new ProductResponseDTO(activatedProduct);
   }
 
+  public ProductResponseDTO getByBarcode(String barcode) {
+    Product product = repository.findByBarcode(barcode).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
+
+    return new ProductResponseDTO(product);
+  }
+
+  public List<ProductResponseDTO> getLowStockProducts() {
+    return repository.findLowStockProducts().stream().map(ProductResponseDTO::new).toList();
+  }
+
+  public List<ProductResponseDTO> getOutOfStockProducts() {
+    return repository.findOutOfStockProducts().stream().map(ProductResponseDTO::new).toList();
+  }
 }
