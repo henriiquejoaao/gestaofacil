@@ -22,8 +22,10 @@ public class ProductService {
     return repository.findAll().stream().map(ProductResponseDTO::new).toList();
   }
 
-  public void save(ProductRequestDTO data) {
-    repository.save(new Product(data));
+  public ProductResponseDTO save(ProductRequestDTO data) {
+    Product product = repository.save(new Product(data));
+
+    return new ProductResponseDTO(product);
   }
 
   public ProductResponseDTO update(UUID id, ProductRequestDTO data) {
@@ -59,6 +61,15 @@ public class ProductService {
     Product product = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
 
     return new ProductResponseDTO(product);
+  }
+
+  public ProductResponseDTO activate(UUID id) {
+    Product product = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
+    product.setActive(true);
+    
+    Product activatedProduct = repository.save(product);
+
+    return new ProductResponseDTO(activatedProduct);
   }
 
 }

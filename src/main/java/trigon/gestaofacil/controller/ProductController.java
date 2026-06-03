@@ -3,8 +3,8 @@ package trigon.gestaofacil.controller;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,33 +23,52 @@ import trigon.gestaofacil.service.ProductService;
 @RequestMapping("/products")
 public class ProductController {
 
-  @Autowired
-  private ProductService service;
+  private final ProductService service;
 
-  @CrossOrigin(origins = "*", allowedHeaders = "*")
+  public ProductController(ProductService service) {
+    this.service = service;
+  }
+
   @GetMapping
-  public List<ProductResponseDTO> getAll() {
-    return service.getAll();
+  public ResponseEntity<List<ProductResponseDTO>> getAll() {
+    return ResponseEntity.ok(service.getAll());
   }
 
   @GetMapping("/{id}")
-  public ProductResponseDTO getById(@PathVariable UUID id) {
-    return service.getById(id);
+  public ResponseEntity<ProductResponseDTO> getById(@PathVariable UUID id) {
+    return ResponseEntity.ok(service.getById(id));
   }
 
   @PostMapping
-  public void saveProduct(@RequestBody @Valid ProductRequestDTO dto) {
-    service.save(dto);
+  public ResponseEntity<ProductResponseDTO> saveProduct(@RequestBody @Valid ProductRequestDTO dto) {
+    ProductResponseDTO product = service.save(dto);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(product);
   }
 
   @PutMapping("/{id}")
-  public void update(@PathVariable UUID id, @RequestBody @Valid ProductRequestDTO dto) {
-    service.update(id, dto);
+  public ResponseEntity<ProductResponseDTO> update(@PathVariable UUID id, @RequestBody @Valid ProductRequestDTO dto) {
+    ProductResponseDTO product = service.update(id, dto);
+
+    return ResponseEntity.status(HttpStatus.OK).body(product);
   }
 
   @DeleteMapping("/{id}")
-  public void delete(@PathVariable UUID id) {
+  public ResponseEntity<Void> delete(@PathVariable UUID id) {
     service.delete(id);
+    return ResponseEntity.noContent().build();
+  }
+
+  @DeleteMapping("/{id}/permanent")
+  public ResponseEntity<Void> hardDelete(@PathVariable UUID id) {
+    service.hardDelete(id);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PutMapping("/{id}/activate")
+  public ResponseEntity<ProductResponseDTO> activate(@PathVariable UUID id) {
+    ProductResponseDTO product = service.activate(id);
+    return ResponseEntity.status(HttpStatus.OK).body(product);
   }
 
 }
