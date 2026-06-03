@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import trigon.gestaofacil.dto.ProductRequestDTO;
 import trigon.gestaofacil.dto.ProductResponseDTO;
 import trigon.gestaofacil.service.ProductService;
@@ -37,12 +38,12 @@ public class ProductController {
   }
 
   @PostMapping
-  public void saveProduct(@RequestBody ProductRequestDTO dto) {
+  public void saveProduct(@RequestBody @Valid ProductRequestDTO dto) {
     service.save(dto);
   }
 
   @PutMapping("/{id}")
-  public void update(@PathVariable UUID id, @RequestBody ProductRequestDTO dto) {
+  public void update(@PathVariable UUID id, @RequestBody @Valid ProductRequestDTO dto) {
     service.update(id, dto);
   }
 
