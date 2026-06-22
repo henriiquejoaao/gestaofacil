@@ -3,6 +3,7 @@ package trigon.gestaofacil.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,6 +20,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import trigon.gestaofacil.enums.StockMovementReason;
 import trigon.gestaofacil.enums.StockMovementType;
 
 @Entity
@@ -39,13 +41,26 @@ public class StockMovement {
   private Product product;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private StockMovementType type;
 
+  @Column(nullable = false)
   private Integer quantity;
 
-  private String reason;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private StockMovementReason reason;
 
+  @Column(nullable = false)
   LocalDateTime createdAt;
+
+  public StockMovement(Product product, StockMovementType type, Integer quantity, StockMovementReason reason, LocalDateTime createdAt) {
+    this.product = product;
+    this.type = type;
+    this.quantity = quantity;
+    this.reason = reason;
+    this.createdAt = createdAt;
+  }
 
   @PrePersist
   public void prePersist() {
