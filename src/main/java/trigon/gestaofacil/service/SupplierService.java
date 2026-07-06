@@ -34,27 +34,27 @@ public class SupplierService {
     return new SupplierResponseDTO(supplier);
   }
 
-  public SupplierResponseDTO save(SupplierRequestDTO data) {
+  public SupplierResponseDTO save(SupplierRequestDTO request) {
     Supplier supplier = new Supplier();
 
-    supplier.setName(data.name());
-    supplier.setCnpj(data.cnpj());
-    supplier.setPhone(data.phone());
-    supplier.setEmail(data.email());
-    supplier.setAddress(data.address());
+    supplier.setName(request.name());
+    supplier.setCnpj(request.cnpj());
+    supplier.setPhone(request.phone());
+    supplier.setEmail(request.email());
+    supplier.setAddress(request.address());
     
     repository.save(supplier);
 
     return new SupplierResponseDTO(supplier);
   }
 
-  public SupplierResponseDTO update(UUID id, SupplierRequestDTO data) {
-    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado"));
-    supplier.setName(data.name());
-    supplier.setCnpj(data.cnpj());
-    supplier.setPhone(data.phone());
-    supplier.setEmail(data.email());
-    supplier.setAddress(data.address());
+  public SupplierResponseDTO update(UUID id, SupplierRequestDTO request) {
+    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
+    supplier.setName(request.name());
+    supplier.setCnpj(request.cnpj());
+    supplier.setPhone(request.phone());
+    supplier.setEmail(request.email());
+    supplier.setAddress(request.address());
 
     repository.save(supplier);
 
@@ -62,14 +62,14 @@ public class SupplierService {
   }
 
   public void delete(UUID id) {
-    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado"));
+    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
     supplier.setActive(false);
 
     repository.save(supplier);
   }
 
   public SupplierResponseDTO activate(UUID id) {
-    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado"));
+    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
     supplier.setActive(true);
 
     Supplier activatedSupplier = repository.save(supplier);
@@ -78,7 +78,7 @@ public class SupplierService {
   }
 
   public void hardDelete(UUID id) {
-    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado"));
+    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
 
     repository.delete(supplier);
   }

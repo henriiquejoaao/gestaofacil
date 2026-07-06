@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
+import trigon.gestaofacil.dto.StockAdjustmentRequestDTO;
 import trigon.gestaofacil.dto.StockMovementRequestDTO;
 import trigon.gestaofacil.dto.StockMovementResponseDTO;
 import trigon.gestaofacil.enums.StockMovementReason;
@@ -24,7 +25,6 @@ public class StockMovementService {
 
   private final StockMovementRepository repository;
   private final ProductRepository productRepository;
-
 
   public StockMovementService(StockMovementRepository repository, ProductRepository productRepository) {
     this.repository = repository;
@@ -62,18 +62,18 @@ public class StockMovementService {
   }
 
   @Transactional
-  public StockMovementResponseDTO registerIn(StockMovementRequestDTO data) {
-    Product product = findProduct(data.productId());
-    validateInReason(data.reason());
+  public StockMovementResponseDTO registerIn(StockMovementRequestDTO request) {
+    Product product = findProduct(request.productId());
+    validateInReason(request.reason());
 
     int currentStock = product.getCurrentStock() == 0 ? 0 : product.getCurrentStock();
 
     StockMovement movement = new StockMovement(product,
     StockMovementType.IN,
-    data.quantity(),
-    data.reason());
+    request.quantity(),
+    request.reason());
 
-    product.setCurrentStock(currentStock + data.quantity());
+    product.setCurrentStock(currentStock + request.quantity());
 
     StockMovement savedMovement = repository.save(movement);
 
@@ -81,43 +81,80 @@ public class StockMovementService {
   }
 
   private Product findProduct(UUID id) {
-    return productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+    return productRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado."));
   }
 
   private void validateInReason(StockMovementReason reason) {
     if (reason == StockMovementReason.SALE || reason == StockMovementReason.LOSS) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Esse motivo não é permitido para entrada de estoque");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Esse motivo não é permitido para entrada de estoque.");
     }
   }
 
   private void validateOutReason(StockMovementReason reason) {
     if (reason == StockMovementReason.PURCHASE || reason == StockMovementReason.RETURN || reason == StockMovementReason.INITIAL_STOCK) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Esse motivo não é permitido para saída de estoque");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Esse motivo não é permitido para saída de estoque.");
     }
   }
 
   @Transactional
-  public StockMovementResponseDTO registerOut(StockMovementRequestDTO data) {
-    Product product = findProduct(data.productId());
-    validateOutReason(data.reason());
+  public StockMovementResponseDTO registerOut(StockMovementRequestDTO request) {
+    Product product = findProduct(request.productId());
+    validateOutReason(request.reason());
 
     int currentStock = product.getCurrentStock() == null ? 0 : product.getCurrentStock();
 
-    if (currentStock < data.quantity()) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Estoque insuficiente para realizar a saída");
+    if (currentStock < request.quantity()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Estoque insuficiente para realizar a saída.");
     }
 
-    product.setCurrentStock(currentStock - data.quantity());
+    product.setCurrentStock(currentStock - request.quantity());
 
     StockMovement movement = new StockMovement(
       product,
       StockMovementType.OUT,
-      data.quantity(),
-      data.reason()
+      request.quantity(),
+      request.reason()
     );
 
     StockMovement savedStockMovement = repository.save(movement);
 
     return new StockMovementResponseDTO(savedStockMovement);
+  }
+
+  @Transactional
+  public StockMovementResponseDTO adjustStock(StockAdjustmentRequestDTO request) {
+    Product product = findProduct(request.productId());
+
+    int currentStock = product.getCurrentStock() == null ? 0 : product.getCurrentStock();
+    int newStock = request.newStock();
+
+    if (currentStock == newStock) {
+    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O novo estoque é igual ao estoque atual.");
+    }
+
+    StockMovementType type;
+    int quantity;
+
+    if (newStock > currentStock) {
+      type = StockMovementType.IN;
+      quantity = newStock - currentStock;
+    }
+    else {
+      type = StockMovementType.OUT;
+      quantity = currentStock - newStock;
+    }
+
+    product.setCurrentStock(newStock);
+
+    StockMovement movement = new StockMovement(
+      product,
+      type,
+      quantity,
+      StockMovementReason.MANUAL_ADJUSTMENT
+    );
+
+    StockMovement savedMovement = repository.save(movement);
+        
+    return new StockMovementResponseDTO(savedMovement);
   }
 }

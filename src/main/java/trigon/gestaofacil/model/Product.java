@@ -49,14 +49,14 @@ public class Product {
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
-  public Product(ProductRequestDTO data) {
-    this.name = data.name();
-    this.description = data.description();
-    this.barcode = data.barcode();
-    this.costPrice = data.costPrice();
-    this.salePrice = data.salePrice();
-    this.currentStock = data.currentStock();
-    this.minimumStock = data.minimumStock();
+  public Product(ProductRequestDTO request) {
+    this.name = request.name();
+    this.description = request.description();
+    this.barcode = request.barcode();
+    this.costPrice = request.costPrice();
+    this.salePrice = request.salePrice();
+    this.currentStock = request.currentStock();
+    this.minimumStock = request.minimumStock();
   }
 
   @PrePersist

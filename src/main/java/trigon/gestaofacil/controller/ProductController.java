@@ -40,17 +40,17 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity<ProductResponseDTO> saveProduct(@RequestBody @Valid ProductRequestDTO dto) {
-    ProductResponseDTO product = service.save(dto);
+  public ResponseEntity<ProductResponseDTO> saveProduct(@RequestBody @Valid ProductRequestDTO request) {
+    ProductResponseDTO response = service.save(request);
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ProductResponseDTO> update(@PathVariable UUID id, @RequestBody @Valid ProductRequestDTO dto) {
-    ProductResponseDTO product = service.update(id, dto);
+  public ResponseEntity<ProductResponseDTO> update(@PathVariable UUID id, @RequestBody @Valid ProductRequestDTO request) {
+    ProductResponseDTO response = service.update(id, request);
 
-    return ResponseEntity.status(HttpStatus.OK).body(product);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @DeleteMapping("/{id}")
@@ -67,8 +67,8 @@ public class ProductController {
 
   @PutMapping("/{id}/activate")
   public ResponseEntity<ProductResponseDTO> activate(@PathVariable UUID id) {
-    ProductResponseDTO product = service.activate(id);
-    return ResponseEntity.status(HttpStatus.OK).body(product);
+    ProductResponseDTO response = service.activate(id);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/barcode/{barcode}")

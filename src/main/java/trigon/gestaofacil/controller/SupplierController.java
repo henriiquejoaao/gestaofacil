@@ -29,7 +29,7 @@ public class SupplierController {
   }
 
   @GetMapping
-  public ResponseEntity<List<SupplierResponseDTO>>getAll() {
+  public ResponseEntity<List<SupplierResponseDTO>> getAll() {
     return ResponseEntity.ok(service.getAll());
   }
 
@@ -44,17 +44,17 @@ public class SupplierController {
   }
 
   @PostMapping
-  public ResponseEntity<SupplierResponseDTO> save(@RequestBody @Valid SupplierRequestDTO dto) {
-    SupplierResponseDTO supplier = service.save(dto);
+  public ResponseEntity<SupplierResponseDTO> save(@RequestBody @Valid SupplierRequestDTO request) {
+    SupplierResponseDTO response = service.save(request);
 
-    return ResponseEntity.status(201).body(supplier);
+    return ResponseEntity.status(201).body(response);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<SupplierResponseDTO> update(@PathVariable UUID id, @RequestBody @Valid SupplierRequestDTO dto) {
-    SupplierResponseDTO supplier = service.update(id, dto);
+  public ResponseEntity<SupplierResponseDTO> update(@PathVariable UUID id, @RequestBody @Valid SupplierRequestDTO request) {
+    SupplierResponseDTO response = service.update(id, request);
 
-    return ResponseEntity.ok(supplier);
+    return ResponseEntity.ok(response);
   }
 
   @DeleteMapping("/{id}")
@@ -66,9 +66,9 @@ public class SupplierController {
 
   @PutMapping("/{id}/activate")
   public ResponseEntity<SupplierResponseDTO> activate(@PathVariable UUID id) {
-    SupplierResponseDTO supplier = service.activate(id);
+    SupplierResponseDTO response = service.activate(id);
 
-    return ResponseEntity.ok(supplier);
+    return ResponseEntity.ok(response);
   }
 
   @DeleteMapping("/{id}/permanent")

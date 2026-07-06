@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import trigon.gestaofacil.dto.StockAdjustmentRequestDTO;
 import trigon.gestaofacil.dto.StockMovementRequestDTO;
 import trigon.gestaofacil.dto.StockMovementResponseDTO;
 import trigon.gestaofacil.service.StockMovementService;
@@ -52,14 +53,20 @@ class StockMovementController {
   }
 
   @PostMapping("/in")
-  public ResponseEntity<StockMovementResponseDTO> registerIn(@RequestBody @Valid StockMovementRequestDTO data) {
-    StockMovementResponseDTO movement = service.registerIn(data);
-    return ResponseEntity.status(201).body(movement);
+  public ResponseEntity<StockMovementResponseDTO> registerIn(@RequestBody @Valid StockMovementRequestDTO request) {
+    StockMovementResponseDTO response = service.registerIn(request);
+    return ResponseEntity.status(201).body(response);
   }
 
   @PostMapping("/out")
-  public ResponseEntity<StockMovementResponseDTO> registerOut(@RequestBody @Valid StockMovementRequestDTO data) {
-    StockMovementResponseDTO movement = service.registerOut(data);
-    return ResponseEntity.status(201).body(movement);
+  public ResponseEntity<StockMovementResponseDTO> registerOut(@RequestBody @Valid StockMovementRequestDTO request) {
+    StockMovementResponseDTO response = service.registerOut(request);
+    return ResponseEntity.status(201).body(response);
+  }
+
+  @PostMapping("/adjust")
+  public ResponseEntity<StockMovementResponseDTO> adjustStock(@RequestBody @Valid StockAdjustmentRequestDTO request) {
+    StockMovementResponseDTO response = service.adjustStock(request);
+    return ResponseEntity.status(201).body(response);
   }
 }
