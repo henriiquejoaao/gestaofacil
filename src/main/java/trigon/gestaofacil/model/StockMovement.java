@@ -54,12 +54,11 @@ public class StockMovement {
   @Column(nullable = false)
   LocalDateTime createdAt;
 
-  public StockMovement(Product product, StockMovementType type, Integer quantity, StockMovementReason reason, LocalDateTime createdAt) {
+  public StockMovement(Product product, StockMovementType type, Integer quantity, StockMovementReason reason) {
     this.product = product;
     this.type = type;
     this.quantity = quantity;
     this.reason = reason;
-    this.createdAt = createdAt;
   }
 
   @PrePersist
