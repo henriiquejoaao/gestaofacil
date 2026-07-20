@@ -7,6 +7,7 @@ import java.util.UUID;
 import trigon.gestaofacil.model.Product;
 
 public record ProductResponseDTO(
+
   UUID id,
   String name,
   String description,
@@ -18,6 +19,7 @@ public record ProductResponseDTO(
   Boolean active,
   LocalDateTime createdAt,
   LocalDateTime updatedAt
+
 ) {
 
   public ProductResponseDTO(Product product) {
@@ -35,4 +37,5 @@ public record ProductResponseDTO(
       product.getUpdatedAt()
     );
   }
+
 }

@@ -19,7 +19,7 @@ import trigon.gestaofacil.service.StockMovementService;
 
 @RestController
 @RequestMapping("/stock-movements")
-class StockMovementController {
+public class StockMovementController {
 
   private final StockMovementService service;
 
@@ -69,4 +69,5 @@ class StockMovementController {
     StockMovementResponseDTO response = service.adjustStock(request);
     return ResponseEntity.status(201).body(response);
   }
+  
 }

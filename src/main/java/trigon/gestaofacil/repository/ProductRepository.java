@@ -18,4 +18,5 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
   @Query("SELECT p FROM Product p WHERE p.currentStock = 0 AND p.active = true")
   List<Product> findOutOfStockProducts();
+  
 }

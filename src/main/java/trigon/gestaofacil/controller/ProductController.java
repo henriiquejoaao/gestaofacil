@@ -85,4 +85,5 @@ public class ProductController {
   public ResponseEntity<List<ProductResponseDTO>> getOutOfStock() {
     return ResponseEntity.ok().body(service.getOutOfStockProducts());
   }
+  
 }

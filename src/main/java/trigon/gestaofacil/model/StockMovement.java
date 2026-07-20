@@ -65,4 +65,5 @@ public class StockMovement {
   public void prePersist() {
     this.createdAt = LocalDateTime.now();
   }
+  
 }

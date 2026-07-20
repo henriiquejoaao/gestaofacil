@@ -15,22 +15,22 @@ import trigon.gestaofacil.model.Supplier;
 @Service
 public class SupplierService {
 
-  private final SupplierRepository repository;
+  private final SupplierRepository supplierRepository;
 
-  public SupplierService(SupplierRepository repository) {
-    this.repository = repository;
+  public SupplierService(SupplierRepository supplierRepository) {
+    this.supplierRepository = supplierRepository;
   }
 
   public List<SupplierResponseDTO> getAll() {
-    return repository.findAll().stream().map(SupplierResponseDTO::new).toList();
+    return supplierRepository.findAll().stream().map(SupplierResponseDTO::new).toList();
   }
 
   public List<SupplierResponseDTO> getActiveSuppliers() {
-    return repository.findByActiveTrue().stream().map(SupplierResponseDTO::new).toList();
+    return supplierRepository.findByActiveTrue().stream().map(SupplierResponseDTO::new).toList();
   }
 
   public SupplierResponseDTO getById(UUID id) {
-    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado"));
+    Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado"));
     return new SupplierResponseDTO(supplier);
   }
 
@@ -43,43 +43,44 @@ public class SupplierService {
     supplier.setEmail(request.email());
     supplier.setAddress(request.address());
     
-    repository.save(supplier);
+    supplierRepository.save(supplier);
 
     return new SupplierResponseDTO(supplier);
   }
 
   public SupplierResponseDTO update(UUID id, SupplierRequestDTO request) {
-    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
+    Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
     supplier.setName(request.name());
     supplier.setCnpj(request.cnpj());
     supplier.setPhone(request.phone());
     supplier.setEmail(request.email());
     supplier.setAddress(request.address());
 
-    repository.save(supplier);
+    supplierRepository.save(supplier);
 
     return new SupplierResponseDTO(supplier);
   }
 
   public void delete(UUID id) {
-    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
+    Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
     supplier.setActive(false);
 
-    repository.save(supplier);
+    supplierRepository.save(supplier);
   }
 
   public SupplierResponseDTO activate(UUID id) {
-    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
+    Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
     supplier.setActive(true);
 
-    Supplier activatedSupplier = repository.save(supplier);
+    Supplier activatedSupplier = supplierRepository.save(supplier);
 
     return new SupplierResponseDTO(activatedSupplier);
   }
 
   public void hardDelete(UUID id) {
-    Supplier supplier = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
+    Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
 
-    repository.delete(supplier);
+    supplierRepository.delete(supplier);
   }
+  
 }

@@ -81,4 +81,5 @@ public class Product {
   public void preUpdate() {
     this.updatedAt = LocalDateTime.now();
   }
+  
 }

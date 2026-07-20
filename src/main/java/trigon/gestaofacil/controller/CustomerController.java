@@ -14,47 +14,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import trigon.gestaofacil.dto.SupplierRequestDTO;
-import trigon.gestaofacil.dto.SupplierResponseDTO;
-import trigon.gestaofacil.service.SupplierService;
+import trigon.gestaofacil.dto.CustomerRequestDTO;
+import trigon.gestaofacil.dto.CustomerResponseDTO;
+import trigon.gestaofacil.service.CustomerService;
 
 @RestController
-@RequestMapping("/suppliers")
-public class SupplierController {
-  
-  private final SupplierService service;
+@RequestMapping("/customers")
+public class CustomerController {
 
-  public SupplierController(SupplierService service) {
+  private final CustomerService service;
+
+  public CustomerController(CustomerService service) {
     this.service = service;
   }
 
   @GetMapping
-  public ResponseEntity<List<SupplierResponseDTO>> getAll() {
+  public ResponseEntity<List<CustomerResponseDTO>> getAll() {
     return ResponseEntity.ok(service.getAll());
   }
 
   @GetMapping("/active")
-  public ResponseEntity<List<SupplierResponseDTO>> getActive() {
-    return ResponseEntity.ok(service.getActiveSuppliers());
+  public ResponseEntity<List<CustomerResponseDTO>> getActive() {
+    return ResponseEntity.ok(service.getActive());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<SupplierResponseDTO> getById(@PathVariable UUID id) {
+  public ResponseEntity<CustomerResponseDTO> getById(@PathVariable UUID id) {
     return ResponseEntity.ok(service.getById(id));
   }
 
   @PostMapping
-  public ResponseEntity<SupplierResponseDTO> save(@RequestBody @Valid SupplierRequestDTO request) {
-    SupplierResponseDTO response = service.save(request);
+  public ResponseEntity<CustomerResponseDTO> save(@RequestBody @Valid CustomerRequestDTO request) {
+    CustomerResponseDTO response = service.save(request);
 
     return ResponseEntity.status(201).body(response);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<SupplierResponseDTO> update(@PathVariable UUID id, @RequestBody @Valid SupplierRequestDTO request) {
-    SupplierResponseDTO response = service.update(id, request);
+  public ResponseEntity<CustomerResponseDTO> update(@PathVariable UUID id, @RequestBody CustomerRequestDTO request) {
+    CustomerResponseDTO response = service.update(id, request);
 
-    return ResponseEntity.ok(response);
+    return ResponseEntity.status(201).body(response);
   }
 
   @DeleteMapping("/{id}")
@@ -65,8 +65,8 @@ public class SupplierController {
   }
 
   @PutMapping("/{id}/activate")
-  public ResponseEntity<SupplierResponseDTO> activate(@PathVariable UUID id) {
-    SupplierResponseDTO response = service.activate(id);
+  public ResponseEntity<CustomerResponseDTO> activate(@PathVariable UUID id) {
+    CustomerResponseDTO response = service.activate(id);
 
     return ResponseEntity.ok(response);
   }
@@ -74,8 +74,8 @@ public class SupplierController {
   @DeleteMapping("/{id}/permanent")
   public ResponseEntity<Void> hardDelete(@PathVariable UUID id) {
     service.hardDelete(id);
-    
+
     return ResponseEntity.noContent().build();
   }
-  
+
 }

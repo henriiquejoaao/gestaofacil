@@ -26,8 +26,8 @@ public class StockMovementService {
   private final StockMovementRepository repository;
   private final ProductRepository productRepository;
 
-  public StockMovementService(StockMovementRepository repository, ProductRepository productRepository) {
-    this.repository = repository;
+  public StockMovementService(StockMovementRepository stockRepository, ProductRepository productRepository) {
+    this.repository = stockRepository;
     this.productRepository = productRepository;
   }
 
@@ -157,4 +157,5 @@ public class StockMovementService {
         
     return new StockMovementResponseDTO(savedMovement);
   }
+
 }

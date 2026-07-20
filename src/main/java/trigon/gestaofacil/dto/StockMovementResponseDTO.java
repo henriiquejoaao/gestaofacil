@@ -8,6 +8,7 @@ import trigon.gestaofacil.enums.StockMovementType;
 import trigon.gestaofacil.model.StockMovement;
 
 public record StockMovementResponseDTO(
+
   UUID id,
   UUID productId,
   String productName,
@@ -15,6 +16,7 @@ public record StockMovementResponseDTO(
   Integer quantity,
   StockMovementReason reason,
   LocalDateTime createdAt
+
 ) {
 
   public StockMovementResponseDTO(StockMovement movement) {
@@ -28,4 +30,5 @@ public record StockMovementResponseDTO(
       movement.getCreatedAt()
     );
   }
+
 }

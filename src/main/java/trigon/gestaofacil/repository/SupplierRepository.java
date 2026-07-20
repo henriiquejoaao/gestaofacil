@@ -10,4 +10,5 @@ import trigon.gestaofacil.model.Supplier;
 public interface SupplierRepository extends JpaRepository<Supplier, UUID> {
   
   public List<Supplier> findByActiveTrue();
+  
 }

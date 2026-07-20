@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public record StockAdjustmentRequestDTO(
+  
   @NotNull(message = "O produto é obrigatório.")
   UUID productId,
 

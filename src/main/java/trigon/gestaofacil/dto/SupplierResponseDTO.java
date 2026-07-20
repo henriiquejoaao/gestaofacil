@@ -32,4 +32,5 @@ public record SupplierResponseDTO(
       supplier.getUpdatedAt()
     );
   }
+  
 }
